@@ -1,23 +1,21 @@
 package homework_three;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 
 public class Person implements Serializable {
-
+    private Long id;
     private String name;
     private int age;
 
-    public Person(String name, int age) {
+    public Person(Long id, String name, int age) {
+        this.id = id;
         this.name = name;
         this.age = age;
     }
 
+    // region getters & setters
     // Геттеры и сеттеры
     public String getName() {
         return name;
@@ -37,19 +35,21 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Person{name='" + name + "', age=" + age + "}";
+        return "Person{" + "id=" + id + ", name='" + name + "'" + ", age=" + age + "}";
     }
 
 
+//endregion
 
+    // region serialize methods
     // Сериализация объекта в файл
     public void serialize(String filename) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        XmlMapper xmlMapper = new XmlMapper();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        XmlMapper xmlMapper = new XmlMapper();
         JsonMapper jsonMapper = new JsonMapper();
         try {
-            if (filename.endsWith(".xml")) xmlMapper.writeValue(new File(filename), this);
-            if (filename.endsWith(".bin")) objectMapper.writeValue(new File(filename), this);
+//            if (filename.endsWith(".xml")) xmlMapper.writeValue(new File(filename), Person.class);
+//            if (filename.endsWith(".bin")) objectMapper.writeValue(new File(filename), Person.class);
             if (filename.endsWith(".json")) jsonMapper.writeValue(new File(filename), this);
         } catch (IOException exception) {
             System.out.println("Err serialize");
@@ -59,12 +59,12 @@ public class Person implements Serializable {
 
     // Десериализация объекта из файла
     public static Person deserialize(String filename) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        XmlMapper xmlMapper = new XmlMapper();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        XmlMapper xmlMapper = new XmlMapper();
         JsonMapper jsonMapper = new JsonMapper();
         try {
-            if (filename.endsWith(".xml")) return xmlMapper.readValue(new File(filename), Person.class);
-            if (filename.endsWith(".bin")) return objectMapper.readValue(new File(filename), Person.class);
+//            if (filename.endsWith(".xml")) return xmlMapper.readValue(new File(filename), Person.class);
+//            if (filename.endsWith(".bin")) return objectMapper.readValue(new File(filename), Person.class);
             if (filename.endsWith(".json")) return jsonMapper.readValue(new File(filename), Person.class);
         } catch (IOException exception) {
             System.out.println("Err deserialize");
@@ -72,4 +72,5 @@ public class Person implements Serializable {
         }
         return null;
     }
+    // endregion
 }
