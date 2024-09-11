@@ -13,8 +13,8 @@ public class Main {
         for (Method method : methods) {
             StringBuilder tmp = new StringBuilder();
             Class<?>[] params = method.getParameterTypes();
-            for (Class<?> p : params) {
-                tmp.append(p.getSimpleName()).append(", ");
+            for (Class<?> param : params) {
+                tmp.append(param.getSimpleName()).append(", ");
             }
             String parameters = tmp.length() < 2 ? tmp.toString() : tmp.substring(0, tmp.length() - 2);
 
