@@ -67,6 +67,10 @@ public class Person implements Serializable {
 
     // region serialize methods
     // Сериализация объекта в файл
+
+    /**
+     * @param filename ony .bin or .json
+     */
     public void serialize(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonMapper jsonMapper = new JsonMapper();
@@ -80,6 +84,9 @@ public class Person implements Serializable {
     }
 
     // Десериализация объекта из файла
+    /**
+     * @param filename ony .bin or .json
+     */
     public static Person deserialize(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonMapper jsonMapper = new JsonMapper();
