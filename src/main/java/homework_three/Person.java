@@ -67,7 +67,6 @@ public class Person implements Serializable {
 
     // region serialize methods
     // Сериализация объекта в файл
-
     /**
      * @param filename ony .bin or .json
      */
