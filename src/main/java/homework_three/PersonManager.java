@@ -4,27 +4,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 public class PersonManager {
     @Autowired
-    private JpaRepository<Person,Long> jpaRepository;
+    private JpaRepository<Person, Long> jpaRepository;
 
     // Метод для добавления нового Person
-    public Person addPerson(Person person) {
-        return jpaRepository.save(person);
+    public void addPerson(Person person) {
+        jpaRepository.save(person);
     }
 
     // Метод для обновления Person
-    public Person updatePerson(Long id, Person personDetails) {
-        Optional<Person> optionalPerson = jpaRepository.findById(id);
-        if (optionalPerson.isPresent()) {
-            Person person = optionalPerson.get();
-            person.setName(personDetails.getName());
-            person.setAge(personDetails.getAge());
-            return jpaRepository.save(person);
+    public boolean updateNameByID(Long id, String newName) {
+        Person findPerson = jpaRepository.getReferenceById(id);
+        if (Objects.equals(findPerson.getId(), id)) {
+            findPerson.setName(newName);
+            jpaRepository.save(findPerson);
+            return true;
         } else {
-            return null;
+            return false;
+        }
+    }
+
+    public boolean updateSurnameByID(Long id, String newSurname) {
+        Person findPerson = jpaRepository.getReferenceById(id);
+        if (Objects.equals(findPerson.getId(), id)) {
+            findPerson.setName(newSurname);
+            jpaRepository.save(findPerson);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean updateAgeByID(Long id, int newAge) {
+        Person findPerson = jpaRepository.getReferenceById(id);
+        if (Objects.equals(findPerson.getId(), id)) {
+            findPerson.setAge(newAge);
+            jpaRepository.save(findPerson);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -33,13 +54,13 @@ public class PersonManager {
         jpaRepository.deleteById(id);
     }
 
-    // Метод для получения всех Person
-    public List<Person> getAllPersons() {
-        return jpaRepository.findAll();
+    // Метод для получения Person по id
+    public Person getPersonByID(Long id) {
+        return jpaRepository.getReferenceById(id);
     }
 
-    // Метод для получения Person по id
-    public Optional<Person> getPersonById(Long id) {
-        return jpaRepository.findById(id);
+    // Метод для получения всех Person
+    public List<Person> getPersonsList() {
+        return jpaRepository.findAll();
     }
 }

@@ -2,9 +2,12 @@ package homework_three;
 
 public class Main {
     public static void main(String[] args) {
-        Person person = new Person(1L,"Amica", 32);
 
-        person.serialize("person.json");
-        System.out.println(Person.deserialize("person.json"));
+        Person person = new Person(1l, "Nik1", "Pupkin", 32);
+        String fileName = "person.json";
+
+        person.serialize(fileName);
+        System.out.println(Person.deserialize(fileName));
+
     }
 }
