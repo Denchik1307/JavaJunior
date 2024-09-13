@@ -19,7 +19,7 @@ public class Connection {
             socket = new Socket(ip, port);
         } catch (IOException e) {
             e.printStackTrace();
-
+            disconnect();
         }
     }
 

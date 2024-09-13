@@ -58,11 +58,10 @@ public class Window extends JFrame {
         JButton btnLogin = new JButton("login");
         btnLogin.addActionListener(e -> {
             System.out.println("login");
-            try {
-                connection = new Connection(textFieldLogin.getText(), password.getPassword().toString(), tfIPAddress.getText(), Integer.getInteger(tfPort.getText()));
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            connection = new Connection(textFieldLogin.getText(),
+                    password.getPassword().toString(),
+                    tfIPAddress.getText(),
+                    Integer.parseInt(tfPort.getText()));
         });
 
         headPanel.add(tfIPAddress);
