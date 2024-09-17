@@ -19,14 +19,18 @@ public class Server {
                 ClientManager clientManager = new ClientManager(socket);
                 Thread thread = new Thread(clientManager);
                 thread.start();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         }
     }
 
     public void stop() {
-
+        try {
+            serverSocket.close();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 }
 
