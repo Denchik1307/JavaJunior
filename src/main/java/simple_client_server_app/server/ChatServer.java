@@ -1,16 +1,20 @@
 package simple_client_server_app.server;
 
+import simple_client_server_app.log.MyLog;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class ChatServer {
-    private static final int PORT = 12345;
-    private static final HashSet<PrintWriter> listClients = new HashSet<>();
+    private static final int PORT = 12222;
+    private static final HashMap<String, PrintWriter> listClients = new HashMap<>();
+
 
     public static void main(String[] args) {
         System.out.println("Чат-сервер запущен...");
@@ -24,25 +28,28 @@ public class ChatServer {
     }
 
     private static class ClientHandler extends Thread {
-        private Socket socket;
-        private PrintWriter out;
-        private BufferedReader in;
+        private final Socket socket;
+        private String name;
 
         public ClientHandler(Socket socket) {
             this.socket = socket;
         }
 
         public void run() {
+            boolean isConnected = false;
             try {
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                out = new PrintWriter(socket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                name = in.readLine();
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                sendToAllClients(name + " connected.");
+
                 synchronized (listClients) {
-                    listClients.add(out);
+                    listClients.put(name, out);
                 }
 
                 String message;
                 while ((message = in.readLine()) != null) {
-                    System.out.println("Получено сообщение: " + message);
+                    System.out.println(name + ": " + message);
                     sendToAllClients(message);
                 }
             } catch (IOException e) {
@@ -54,15 +61,18 @@ public class ChatServer {
                     e.printStackTrace();
                 }
                 synchronized (listClients) {
-                    listClients.remove(out);
+                    listClients.remove(name);
                 }
             }
         }
 
         private void sendToAllClients(String message) {
             synchronized (listClients) {
-                for (PrintWriter client : listClients) {
-                    client.println(message);
+                MyLog.write(name + ": " + message);
+                for (String client : listClients.keySet()) {
+                    if (!client.equals(name)){
+                        listClients.get(client).println(name + ": " + message);
+                    }
                 }
             }
         }
